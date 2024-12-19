@@ -7,8 +7,19 @@ const list2: string[] = [];
 
 inputDataLines.forEach((line) => {
   const columns = line.split("   ");
-  list1.push(columns[0]);
-  list2.push(columns[1]);
+  if (columns[0]) {
+    list1.push(columns[0]);
+  }
+  if (columns[1]) {
+    list2.push(columns[1]);
+  }
 });
 
-console.log(list1);
+const list1Sorted = [...list1].sort();
+const list2Sorted = [...list2].sort();
+
+list1Sorted.forEach((list1Item, index) => {
+  const list2Item = list2Sorted[index];
+  const distance = Math.abs(parseInt(list1Item) - parseInt(list2Item));
+  console.log(`Distance between ${list1Item} and ${list2Item} is ${distance}`);
+});
