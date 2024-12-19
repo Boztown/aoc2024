@@ -18,8 +18,14 @@ inputDataLines.forEach((line) => {
 const list1Sorted = [...list1].sort();
 const list2Sorted = [...list2].sort();
 
+let totalDistance = 0;
+
 list1Sorted.forEach((list1Item, index) => {
   const list2Item = list2Sorted[index];
   const distance = Math.abs(parseInt(list1Item) - parseInt(list2Item));
   console.log(`Distance between ${list1Item} and ${list2Item} is ${distance}`);
+  totalDistance += distance;
 });
+
+console.log("------------------------------");
+console.log(`Total distance is ${totalDistance}`);
