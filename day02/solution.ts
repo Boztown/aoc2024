@@ -2,12 +2,16 @@ const inputFile = Bun.file("input.txt");
 const inputData = await inputFile.text();
 const inputDataLines = inputData.trimEnd().split("\n");
 
-const reports = inputDataLines.map((line) => {
-  return line.split(" ").map((value) => parseInt(value));
-});
+export function solutionPartOne() {
+  const reports = inputDataLines.map((line) => {
+    return line.split(" ").map((value) => parseInt(value));
+  });
 
-const safeReports = reports.filter(isSafe);
-console.log("SAFE REPORTS:", safeReports.length);
+  const safeReports = reports.filter(isSafe);
+  console.log("SAFE REPORTS:", safeReports.length);
+  return safeReports.length;
+}
+solutionPartOne();
 
 function isSafe(report: number[]) {
   return (

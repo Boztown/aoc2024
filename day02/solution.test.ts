@@ -1,5 +1,10 @@
 import { expect, test } from "bun:test";
-import { safeGradualChange } from "./solution";
+import { safeGradualChange, solutionPartOne } from "./solution";
+
+test("solution part one", () => {
+  const result = solutionPartOne();
+  expect(result).toBe(369);
+});
 
 test("safeGradualChange - increasing", () => {
   const report1 = [1, 2, 3, 4, 5];
