@@ -37,7 +37,7 @@ export function parseCommandList() {
   return inputData.match(regex)!;
 }
 
-function runWithoutControls() {
+export function runWithoutControls() {
   const commandList = parseCommandList();
   let total = 0;
 
@@ -50,9 +50,10 @@ function runWithoutControls() {
   }
 
   console.log("Without Controls:", total);
+  return total;
 }
 
-function runWithControls() {
+export function runWithControls() {
   const commandList = parseCommandList();
   let total = 0;
   let enabled = true;
@@ -74,6 +75,7 @@ function runWithControls() {
   }
 
   console.log("With Controls:", total);
+  return total;
 }
 
 runWithoutControls();
