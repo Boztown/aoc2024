@@ -1,49 +1,90 @@
 const inputFile = Bun.file("input.txt");
 const inputData = await inputFile.text();
 const inputDataLines = inputData.trimEnd().split("\n");
+const reports = inputDataLines.map((line) => {
+  return line.split(" ").map((value) => parseInt(value));
+});
+console.log("Total Reports:", reports.length);
 
 export function solutionPartOne() {
-  const reports = inputDataLines.map((line) => {
-    return line.split(" ").map((value) => parseInt(value));
-  });
-
-  const safeReports = reports.filter(isSafe);
+  const safeReports = [...reports].filter(isSafe);
   console.log("SAFE REPORTS:", safeReports.length);
   return safeReports.length;
 }
-solutionPartOne();
+// solutionPartOne();
 
-function isSafe(report: number[]) {
-  return (
-    safeGradualChange(report, (a, b) => a < b) ||
-    safeGradualChange(report, (a, b) => a > b)
-  );
+export function solutionPartTwo() {
+  const safeReportsWithDampener = [...reports].filter(isSafeWithDampener);
+  console.log("SAFE REPORTS WITH DAMPENER:", safeReportsWithDampener.length);
+  return safeReportsWithDampener.length;
+}
+// solutionPartTwo();
+
+export function isSafe(report: number[]) {
+  const result = safeGradualChange(report);
+  return result.safe;
 }
 
-export function safeGradualChange(
-  report: number[],
-  comparator: (a: number, b: number) => boolean
-) {
-  let stableChange = true;
+export function isSafeWithDampener(report: number[]) {
+  let isSafe = false;
+  const result = safeGradualChange(report);
+
+  if (result.safe) {
+    isSafe = true;
+  } else {
+    // console.log("");
+    // console.log(report);
+    // console.log(result);
+    const { badLevelIndexes } = result;
+
+    for (const index of badLevelIndexes) {
+      const newReport = [...report];
+      newReport.splice(index, 1);
+      const newResult = safeGradualChange(newReport);
+      if (newResult.safe) {
+        // console.log("Safe Dampened Report:", newReport);
+        isSafe = true;
+        break;
+      }
+    }
+  }
+
+  if (!isSafe) {
+    console.log("Unfixable report:", report);
+  }
+
+  return isSafe;
+}
+
+export function safeGradualChange(report: number[]) {
+  let prevDirection = undefined;
+  const badLevelIndexes = [];
+  // console.log("Report:", report);
   for (let i = 0; i < report.length; i++) {
     const current = report[i];
-    const next = report[i + 1];
+    let next = report[i + 1];
 
     if (!next) {
       break;
     }
 
-    if (comparator(current, next)) {
-      stableChange = false;
-      break;
+    // console.log("Current:", current, "Next:", next);
+
+    const diff = next - current;
+    const currentDirection = Math.sign(diff);
+
+    if (prevDirection === undefined) {
+      prevDirection = currentDirection;
     }
 
-    const diff = Math.abs(current - next);
-    if (diff === 0 || diff > 3) {
-      stableChange = false;
-      break;
+    if (prevDirection !== currentDirection) {
+      badLevelIndexes.push(i);
+    } else if (Math.abs(diff) > 3 || Math.abs(diff) === 0) {
+      badLevelIndexes.push(i);
     }
+
+    prevDirection = currentDirection;
   }
 
-  return stableChange;
+  return { safe: badLevelIndexes.length === 0, badLevelIndexes };
 }
