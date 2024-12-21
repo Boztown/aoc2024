@@ -30,24 +30,13 @@ export function isSafeWithDampener(report: number[]) {
   const result = safeGradualChange(report);
 
   if (result.safe) {
-    // console.log("safe");
     isSafe = true;
   } else {
-    // console.log("");
-    // console.log(report);
-    // console.log(result);
-    const { badLevelIndexes } = result;
-    // We'll always try removing the last one because the `badLevelIndexes` will
-    // never contain it. Ideally it would.
-    badLevelIndexes.push(report.length - 1);
-    // console.log("Bad Level Indexes:", badLevelIndexes);
-    for (const index of badLevelIndexes) {
+    for (let i = 0; i < report.length; i++) {
       const newReport = [...report];
-      newReport.splice(index, 1);
-      // console.log("Re-running");
+      newReport.splice(i, 1);
       const newResult = safeGradualChange(newReport);
       if (newResult.safe) {
-        // console.log("Safe Dampened Report:", newReport);
         isSafe = true;
         break;
       }
