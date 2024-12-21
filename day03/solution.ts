@@ -9,6 +9,17 @@ if (!regexResult) {
   process.exit();
 }
 
+let total = 0;
+
 for (const mul of regexResult) {
-  console.log("->", mul);
+  const mulExtract = /\d{1,3}/g;
+  const inputNumbers = mul.match(mulExtract);
+  if (inputNumbers) {
+    const result = parseInt(inputNumbers[0]) * parseInt(inputNumbers[1]);
+    total += result;
+    console.log("->", mul, "=", result);
+  }
 }
+
+console.log("------ TOTAL ------");
+console.log(`     ${total}       `);
