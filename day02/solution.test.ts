@@ -12,7 +12,7 @@ test("solution part one", () => {
   expect(result).toBe(369);
 });
 
-test("solution part two", () => {
+test.only("solution part two", () => {
   const result = solutionPartTwo();
   expect(result).toBe(369);
 });
@@ -36,7 +36,7 @@ test("safeGradualChange - increasing", () => {
   expect(safeGradualChange(report5).safe).toBe(false);
 });
 
-test.only("part two (dampening) example", () => {
+test("part two (dampening) example", () => {
   const report1 = [7, 6, 4, 2, 1];
   expect(isSafeWithDampener(report1)).toBe(true);
 
@@ -62,7 +62,13 @@ test.only("part two (dampening) example", () => {
   expect(isSafeWithDampener(report8)).toBe(true);
 
   const report9 = [51, 52, 55, 58, 60, 61, 62, 61];
-  // expect(isSafeWithDampener(report9)).toBe(true);
+  expect(isSafeWithDampener(report9)).toBe(true);
+
   const report9a = [51, 52, 55, 58, 60, 61, 62];
   expect(isSafe(report9a)).toBe(true);
+});
+
+test("baddie", () => {
+  const report9 = [70, 52, 55, 58, 60, 61, 62];
+  expect(isSafeWithDampener(report9)).toBe(true);
 });
