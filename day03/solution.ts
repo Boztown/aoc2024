@@ -46,12 +46,35 @@ function runWithoutControls() {
       const mulC = new MulCommand(cmd);
       const result = mulC.execute();
       total += result;
-      console.log("->", cmd, "=", result);
     }
   }
 
-  console.log("------ TOTAL ------");
-  console.log(`     ${total}       `);
+  console.log("Without Controls:", total);
+}
+
+function runWithControls() {
+  const commandList = parseCommandList();
+  let total = 0;
+  let enabled = true;
+
+  for (const cmd of commandList) {
+    if (cmd.includes("mul") && enabled) {
+      const mulC = new MulCommand(cmd);
+      const result = mulC.execute();
+      total += result;
+    }
+
+    if (cmd.includes("do()")) {
+      enabled = true;
+    }
+
+    if (cmd.includes("don't()")) {
+      enabled = false;
+    }
+  }
+
+  console.log("With Controls:", total);
 }
 
 runWithoutControls();
+runWithControls();
