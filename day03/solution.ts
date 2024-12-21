@@ -20,7 +20,7 @@ class MulCommand extends Command {
       this.a = parseInt(inputNumbers[0]);
       this.b = parseInt(inputNumbers[1]);
     } else {
-      throw new Error("Invalid command string");
+      throw new Error(`Invalid command string: ${commandString}`);
     }
   }
 
@@ -32,22 +32,26 @@ class MulCommand extends Command {
 const inputFile = Bun.file("input.txt");
 const inputData = await inputFile.text();
 
-const mulCommandRegex = /mul\(\d{0,3},\d{0,3}\)/gm;
-const regexResult = inputData.match(mulCommandRegex);
-
-if (!regexResult) {
-  console.log("Nothing found");
-  process.exit();
+export function parseCommandList() {
+  const regex = /mul\(\d{0,3},\d{0,3}\)|do\(\)|don't\(\)/gm;
+  return inputData.match(regex)!;
 }
 
-let total = 0;
+function runWithoutControls() {
+  const commandList = parseCommandList();
+  let total = 0;
 
-for (const mul of regexResult) {
-  const mulC = new MulCommand(mul);
-  const result = mulC.execute();
-  total += result;
-  console.log("->", mul, "=", result);
+  for (const cmd of commandList) {
+    if (cmd.includes("mul")) {
+      const mulC = new MulCommand(cmd);
+      const result = mulC.execute();
+      total += result;
+      console.log("->", cmd, "=", result);
+    }
+  }
+
+  console.log("------ TOTAL ------");
+  console.log(`     ${total}       `);
 }
 
-console.log("------ TOTAL ------");
-console.log(`     ${total}       `);
+runWithoutControls();
