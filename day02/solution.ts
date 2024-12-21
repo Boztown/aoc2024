@@ -11,14 +11,14 @@ export function solutionPartOne() {
   console.log("SAFE REPORTS:", safeReports.length);
   return safeReports.length;
 }
-// solutionPartOne();
+solutionPartOne();
 
 export function solutionPartTwo() {
   const safeReportsWithDampener = [...reports].filter(isSafeWithDampener);
   console.log("SAFE REPORTS WITH DAMPENER:", safeReportsWithDampener.length);
   return safeReportsWithDampener.length;
 }
-// solutionPartTwo();
+solutionPartTwo();
 
 export function isSafe(report: number[]) {
   const result = safeGradualChange(report);
@@ -43,27 +43,19 @@ export function isSafeWithDampener(report: number[]) {
     }
   }
 
-  if (!isSafe) {
-    console.log("Unfixable report:", report);
-  }
-
   return isSafe;
 }
 
 export function safeGradualChange(report: number[]) {
   let prevDirection = undefined;
   const badLevelIndexes = [];
-  // console.log("Report:", report);
   for (let i = 0; i < report.length; i++) {
-    // console.log("Current:", report[i]);
     const current = report[i];
     let next = report[i + 1];
 
     if (!next) {
       break;
     }
-
-    // console.log("Current:", current, "Next:", next);
 
     const diff = next - current;
     const currentDirection = Math.sign(diff);
