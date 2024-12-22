@@ -26,7 +26,7 @@ export class Matrix {
     return line;
   }
 
-  getAllLinesFromPoint({
+  public getAllLinesFromPoint({
     point,
     count: lineLength,
   }: {
@@ -43,6 +43,16 @@ export class Matrix {
     return lines;
   }
 
+  public getSurroudingMatrix(point: Point, length: number) {
+    const buildUp = [];
+    const row = this.matrix[point.y];
+    for (let i = 0; i < length; i++) {
+      const x = point.x + i;
+      buildUp.push(this.get(x, point.y));
+    }
+    return buildUp;
+  }
+
   public iteratePoints(callback: (point: Point) => void) {
     for (let r = 0; r < this.matrix.length; r++) {
       const row = this.matrix[r];
@@ -53,6 +63,8 @@ export class Matrix {
       }
     }
   }
+
+  public findSubMatrix(submatrix: Matrix) {}
 }
 
 type Vector = { x: number; y: number };

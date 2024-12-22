@@ -23,6 +23,11 @@ export function runSolution01(data: string) {
   return foundWords;
 }
 
+export function runSolution02(data: string) {
+  const m = new Matrix(parseToArray(data));
+  console.log(m.getSurroudingMatrix({ x: 4, y: 0 }, 2));
+}
+
 function parseToArray(data: string): string[][] {
   return data
     .trim()
