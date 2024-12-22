@@ -7,24 +7,39 @@ export class Matrix {
 
   public getLineFromPoint({
     point,
-    count,
+    lineLength,
     direction,
   }: {
     point: Point;
-    count: number;
+    lineLength: number;
     direction: string;
   }) {
     const line = [];
     const vector = Directions[direction];
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < lineLength; i++) {
       const x = point.x + vector.x * i;
       const y = point.y + vector.y * i;
-      console.log(x, y);
       line.push(this.get(x, y));
     }
 
     return line;
+  }
+
+  getAllLinesFromPoint({
+    point,
+    count: lineLength,
+  }: {
+    point: Point;
+    count: number;
+  }) {
+    const lines = [];
+
+    for (const direction in Directions) {
+      lines.push(this.getLineFromPoint({ point, lineLength, direction }));
+    }
+
+    return lines;
   }
 }
 
