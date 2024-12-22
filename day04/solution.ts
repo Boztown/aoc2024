@@ -13,15 +13,20 @@ export function runSolution01(data: string) {
       point,
       count: 4,
     });
-    // pp(lines);
-    lines.forEach((line) => {
-      console.log("Line:", line, "Word:", word);
-      const lineString = line.join("");
+    // console.log(lines);
+    Object.entries(lines).forEach((line) => {
+      // console.log("Line:", line, "Word:", word);
+      const lineString = line[1].join("");
+      const lineDir = line[0];
+
       if (lineString === word.join("")) {
         console.log(`Found word from:`, point);
         foundWords++;
       }
-      if (lineString === word.reverse().join("")) {
+      if (
+        lineString === word.reverse().join("") &&
+        (lineDir === "Left" || lineDir === "Right")
+      ) {
         console.log(`Found REVERSED from:`, point);
         foundWords++;
       }

@@ -33,10 +33,11 @@ export class Matrix {
     point: Point;
     count: number;
   }) {
-    const lines = [];
+    const lines: Record<string, (string | undefined)[]> = {};
 
     for (const direction in Directions) {
-      lines.push(this.getLineFromPoint({ point, lineLength, direction }));
+      const line = this.getLineFromPoint({ point, lineLength, direction });
+      lines[direction] = line;
     }
 
     return lines;
