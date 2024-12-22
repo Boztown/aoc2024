@@ -24,8 +24,8 @@ export function runSolution01(data: string) {
         foundWords++;
       }
       if (
-        lineString === word.reverse().join("") &&
-        (lineDir === "Left" || lineDir === "Right")
+        (lineString === word.reverse().join("") && lineDir === "Left") ||
+        lineDir === "Right"
       ) {
         console.log(`Found REVERSED from:`, point);
         foundWords++;
@@ -34,9 +34,8 @@ export function runSolution01(data: string) {
   });
 
   console.log(`Found words:`, foundWords);
+  return foundWords;
 }
-
-runSolution01(inputData);
 
 function parseToArray(data: string): string[][] {
   return data
