@@ -14,6 +14,17 @@ MXMXAXMASX
 `;
 
 type Grid = string[][];
+type FixedLengthArray<T, L extends number> = [T, ...T[]] & { length: L };
+type Matrix<T, R extends number, C extends number> = FixedLengthArray<
+  FixedLengthArray<T, C>,
+  R
+>;
+
+const testFixedArray: Matrix<string | undefined, 3, 3> = [
+  [undefined, "X", "M"],
+  [undefined, "A", "M"],
+  [undefined, "S", "X"],
+];
 
 function parseToGrid(data: string): Grid {
   return data
