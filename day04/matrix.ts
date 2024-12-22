@@ -1,8 +1,8 @@
 export class Matrix {
   constructor(private readonly matrix: string[][]) {}
 
-  public get(x: number, y: number): string | undefined {
-    return this.matrix[y]?.[x];
+  public get(point: Point): string | undefined {
+    return this.matrix[point.y]?.[point.x];
   }
 
   public getLineFromPoint({
@@ -20,7 +20,7 @@ export class Matrix {
     for (let i = 0; i < lineLength; i++) {
       const x = point.x + vector.x * i;
       const y = point.y + vector.y * i;
-      line.push(this.get(x, y));
+      line.push(this.get({ x, y }));
     }
 
     return line;
@@ -43,14 +43,46 @@ export class Matrix {
     return lines;
   }
 
+  public expandHorizontalFromPoint(point: Point, n: number) {
+    const expandedLine = [];
+    // Backwards
+    for (let i = 1; i <= n; i++) {
+      expandedLine.push(
+        this.get({ x: point.x - (n - (i - 1)), y: point.y }) || "-"
+      );
+    }
+
+    // Current
+    expandedLine.push(this.get(point) || "-");
+
+    // Forwards
+    for (let i = 1; i <= n; i++) {
+      expandedLine.push(this.get({ x: point.x + i, y: point.y }) || "-");
+    }
+    return expandedLine;
+  }
+
   public getSurroudingMatrix(point: Point, length: number) {
     const buildUp = [];
-    const row = this.matrix[point.y];
-    for (let i = 0; i < length; i++) {
-      const x = point.x + i;
-      buildUp.push(this.get(x, point.y));
+
+    for (let i = 1; i <= length; i++) {
+      buildUp.push(
+        this.expandHorizontalFromPoint(
+          { x: point.x, y: point.y + (length - (i - 1)) },
+          length
+        )
+      );
     }
-    return buildUp;
+
+    buildUp.push(this.expandHorizontalFromPoint(point, length));
+
+    for (let i = 1; i <= length; i++) {
+      buildUp.push(
+        this.expandHorizontalFromPoint({ x: point.x, y: point.y - i }, length)
+      );
+    }
+
+    return new Matrix(buildUp);
   }
 
   public iteratePoints(callback: (point: Point) => void) {
@@ -64,7 +96,9 @@ export class Matrix {
     }
   }
 
-  public findSubMatrix(submatrix: Matrix) {}
+  public print() {
+    this.matrix.forEach((row) => console.log(row));
+  }
 }
 
 type Vector = { x: number; y: number };

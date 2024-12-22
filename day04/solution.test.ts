@@ -39,6 +39,7 @@ M.M.M.M.M.
 ..........
 `;
 
-test.only("solution 02 - example data", () => {
+test("solution 02 - example data", () => {
   const result = runSolution02(exampleData02);
+  expect(result).toBe(9);
 });

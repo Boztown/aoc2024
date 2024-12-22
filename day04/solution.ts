@@ -25,7 +25,46 @@ export function runSolution01(data: string) {
 
 export function runSolution02(data: string) {
   const m = new Matrix(parseToArray(data));
-  console.log(m.getSurroudingMatrix({ x: 4, y: 0 }, 2));
+  let totalMatches = 0;
+  m.iteratePoints((point) => {
+    const subM = m.getSurroudingMatrix(point, 1);
+    // console.log(`Point (${point.x}, ${point.y})`);
+    console.log("Submatrix:");
+    subM.print();
+    const lines = subM.getAllLinesFromPoint({
+      point: { x: 1, y: 1 },
+      count: 2,
+    });
+    console.log("Lines:");
+    console.log(lines);
+    const diagonal1 = [
+      lines.UpLeft[1],
+      subM.get({ x: 1, y: 1 }),
+      lines.DownRight[1],
+    ];
+    const diagonal2 = [
+      lines.UpRight[1],
+      subM.get({ x: 1, y: 1 }),
+      lines.DownLeft[1],
+    ];
+
+    const x1 =
+      diagonal1.join("") === "MAS" || diagonal1.reverse().join("") === "MAS";
+    const x2 =
+      diagonal2.join("") === "MAS" || diagonal2.reverse().join("") === "MAS";
+
+    console.log("Diagonal 1:", diagonal1);
+    console.log("Diagonal 2:", diagonal2);
+    console.log("x1", x1);
+    console.log("x2", x2);
+    console.log("is valid X?", x1 && x2);
+
+    if (x1 && x2) {
+      totalMatches++;
+    }
+  });
+
+  return totalMatches;
 }
 
 function parseToArray(data: string): string[][] {
