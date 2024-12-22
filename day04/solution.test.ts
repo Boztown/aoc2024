@@ -43,3 +43,10 @@ test("solution 02 - example data", () => {
   const result = runSolution02(exampleData02);
   expect(result).toBe(9);
 });
+
+test("solution 02 - input data", async () => {
+  const inputFile = Bun.file("input.txt");
+  const inputData = await inputFile.text();
+  const result = runSolution02(inputData);
+  expect(result).toBe(1930);
+});
