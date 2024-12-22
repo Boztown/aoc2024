@@ -41,6 +41,17 @@ export class Matrix {
 
     return lines;
   }
+
+  public iteratePoints(callback: (point: Point) => void) {
+    for (let r = 0; r < this.matrix.length; r++) {
+      const row = this.matrix[r];
+      for (let c = 0; c < row.length; c++) {
+        const col = this.matrix[r][c];
+        const point: Point = { x: c, y: r };
+        callback(point);
+      }
+    }
+  }
 }
 
 type Vector = { x: number; y: number };

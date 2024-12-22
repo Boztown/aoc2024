@@ -1,17 +1,37 @@
 import { Matrix } from "./matrix";
 
-const exampleData = `
-MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX
-`;
+const word = "XMAS".split("");
+const inputFile = Bun.file("input.txt");
+const inputData = await inputFile.text();
+
+export function runSolution01(data: string) {
+  const m = new Matrix(parseToArray(data));
+  let foundWords = 0;
+  m.iteratePoints((point) => {
+    // console.log(`callback:`, point);
+    const lines = m.getAllLinesFromPoint({
+      point,
+      count: 4,
+    });
+    // pp(lines);
+    lines.forEach((line) => {
+      console.log("Line:", line, "Word:", word);
+      const lineString = line.join("");
+      if (lineString === word.join("")) {
+        console.log(`Found word from:`, point);
+        foundWords++;
+      }
+      if (lineString === word.reverse().join("")) {
+        console.log(`Found REVERSED from:`, point);
+        foundWords++;
+      }
+    });
+  });
+
+  console.log(`Found words:`, foundWords);
+}
+
+runSolution01(inputData);
 
 function parseToArray(data: string): string[][] {
   return data
@@ -19,23 +39,6 @@ function parseToArray(data: string): string[][] {
     .split("\n")
     .map((line) => line.split(""));
 }
-
-const m = new Matrix(parseToArray(exampleData));
-
-// console.log(
-//   m.getLineFromPoint({
-//     point: { x: 0, y: 0 },
-//     lineLength: 5,
-//     direction: "DownRight",
-//   })
-// );
-
-pp(
-  m.getAllLinesFromPoint({
-    point: { x: 3, y: 0 },
-    count: 4,
-  })
-);
 
 function pp(s: (string | undefined)[][]) {
   const prettier = s.map((line) => {
