@@ -14,17 +14,6 @@ MXMXAXMASX
 `;
 
 type Grid = string[][];
-type FixedLengthArray<T, L extends number> = [T, ...T[]] & { length: L };
-type Matrix<T, R extends number, C extends number> = FixedLengthArray<
-  FixedLengthArray<T, C>,
-  R
->;
-
-const testFixedArray: Matrix<string | undefined, 3, 3> = [
-  [undefined, "X", "M"],
-  [undefined, "A", "M"],
-  [undefined, "S", "X"],
-];
 
 function parseToGrid(data: string): Grid {
   return data
@@ -42,6 +31,31 @@ function p(s: string | undefined) {
     return "⊗";
   } else {
     return s;
+  }
+}
+
+// v2
+function scan(grid: Grid) {
+  const word = "XMAS".split("");
+
+  for (let y = 0; y < grid.length; y++) {
+    const previousRow = grid[y - 1];
+    const currentRow = grid[y];
+    const nextRow = grid[y + 1];
+
+    for (let x = 0; x < currentRow.length; x++) {
+      const currentValue = currentRow[x];
+      const leftValue = currentRow[x - 1];
+      const rightValue = currentRow[x + 1];
+      const aboveValue = previousRow ? previousRow[x] : undefined;
+      const aboveLeftValue = previousRow ? previousRow[x - 1] : undefined;
+      const aboveRightValue = previousRow ? previousRow[x + 1] : undefined;
+      const belowValue = nextRow ? nextRow[x] : undefined;
+      const belowLeftValue = nextRow ? nextRow[x - 1] : undefined;
+      const belowRightValue = nextRow ? nextRow[x + 1] : undefined;
+
+      const nextValueInWord = word.lastIndexOf(currentValue) + 1;
+    }
   }
 }
 
