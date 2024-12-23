@@ -31,13 +31,15 @@ export function runSolution1(data: string) {
   const rules = parseRules(data);
   const updates = parseUpdates(data);
 
-  for (const update of updates.slice(0, 5)) {
+  const goodUpdates = updates.slice(0, 50).filter((update) => {
+    let isValid = true;
+
     // Only keep rules what correspond to a number in the update
     const applicableRules = rules.filter(
       (r) => update.includes(r[0]) || update.includes(r[0])
     );
 
-    console.log("Applicable Rules:", applicableRules.length);
+    // console.log("Applicable Rules:", applicableRules.length);
 
     for (const rule of applicableRules) {
       const a = update.indexOf(rule[0]);
@@ -48,14 +50,38 @@ export function runSolution1(data: string) {
       }
 
       if (b < a) {
-        console.log("Move it with rule:", rule);
-        console.log("Before:", update);
-        console.log(`Moving ${rule[0]} and ${rule[1]}`);
-        update[a] = rule[1];
-        update[b] = rule[0];
-        console.log("After:", update);
+        console.log("Move it with rule:", rule, update);
+        isValid = false;
       }
     }
-    // Find index of...
+
+    return isValid;
+  });
+
+  console.log("Good Updates:", goodUpdates.length);
+
+  for (const g of goodUpdates) {
+    if (g.length % 2 === 0) {
+      console.log("FOUND EVEN!", g);
+      throw "!";
+    }
   }
+
+  const middlesColumnValues = goodUpdates.map((update) => {
+    console.log("UPDATE:", update);
+    const middleIndex = Math.floor(update.length / 2);
+    console.log("MIDDLE:", update[middleIndex]);
+    return update[middleIndex];
+  });
+
+  console.log("Middles...");
+  console.log(middlesColumnValues);
+
+  console.log(
+    "TOTAL",
+    middlesColumnValues.reduce(
+      (previousValue, currentValue) => previousValue + currentValue,
+      0
+    )
+  );
 }
