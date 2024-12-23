@@ -77,11 +77,12 @@ export function runSolution1(data: string) {
   console.log("Middles...");
   console.log(middlesColumnValues);
 
-  console.log(
-    "TOTAL",
-    middlesColumnValues.reduce(
-      (previousValue, currentValue) => previousValue + currentValue,
-      0
-    )
+  const total = middlesColumnValues.reduce(
+    (previousValue, currentValue) => previousValue + currentValue,
+    0
   );
+
+  console.log("TOTAL", total);
+
+  return total;
 }
