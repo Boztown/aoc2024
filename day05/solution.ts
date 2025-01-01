@@ -31,7 +31,7 @@ export function runSolution1(data: string) {
   const rules = parseRules(data);
   const updates = parseUpdates(data);
 
-  const goodUpdates = updates.slice(0, 50).filter((update) => {
+  const goodUpdates = updates.filter((update) => {
     let isValid = true;
 
     // Only keep rules what correspond to a number in the update
